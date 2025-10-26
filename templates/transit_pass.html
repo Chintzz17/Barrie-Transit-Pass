@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barrie Transit Pass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pass-blue': '#326E97', /* Main card blue */
+                        'pass-red': '#F53B57',  /* Expire button red */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        #app-container {
+            max-width: 450px; /* Max width for app feel on desktop */
+            min-height: 100vh;
+            margin: 0 auto;
+            position: relative;
+            background-color: white; /* Simulate the phone background */
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 72px; /* Space for the bottom nav */
+        }
+        .main-card {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pass-bg {
+            background-color: #326E97; 
+        }
+
+        .city-video-container {
+            width: 100%;
+            min-height: 200px; 
+            overflow: hidden;
+            background-color: #d1e4f4; /* Placeholder background matching the cityscape color */
+        }
+        .city-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- TOP NAVIGATION/HEADER (Minimalist to ignore time/battery) -->
+        <header class="flex justify-between items-center p-4 bg-white shadow-sm">
+            <!-- Menu Icon (Updated color) -->
+            <button class="text-[#326E97] focus:outline-none">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <div class="flex items-center space-x-4">
+                <!-- Back Arrow Icon -->
+                <button class="text-gray-600 focus:outline-none" onclick="window.location.reload()">
+                    <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </header>
+
+
+        <main class="flex flex-grow justify-center py-1">
+            <div id="pass-card" class="main-card pass-bg text-white px-6 py-10 rounded-3xl text-center w-[90%] h-[835px] flex flex-col justify-between">
+                
+                <div class="flex flex-col items-center">
+                    <p class="text-xl font-semibold opacity-75 mb-6">Student 10 Ride Card</p> <!-- Increased text size and margin -->
+                    
+                    <h1 id="current-date" class="text-4xl font-extrabold mb-2"></h1>
+                    <p id="current-time" class="text-2xl font-bold mb-8"></p>
+
+                    <p class="text font-medium mb-6">Barrie Transit</p> <!-- Increased text size -->
+                </div>
+
+                <div class="city-video-container flex-grow rounded-xl shadow-inner my-6">
+                    <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                        <source src="/static/fuckyoubarrietransit.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                
+                <div class="flex flex-col items-center">
+                    <button id="expire-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-16 rounded-full shadow-lg transition duration-200 transform hover:scale-105 mb-6 focus:outline-none">
+                        Expire
+                    </button>
+
+                    <p id="countdown-text" class="text font-semibold mb-2"></p>
+                    
+                    <p class="text-base opacity-75">User ID 1111195378</p>
+                </div>
+            </div>
+        </main>
+
+        <nav class="fixed bottom-0 w-full max-w-[450px] bg-white border-t border-gray-200 shadow-2xl">
+            <div class="flex justify-around items-center h-18 py-2">
+                
+                <a href="#" class="flex flex-col items-center text-gray-400 hover:text-[#326E97] transition duration-150">
+                    <i data-lucide="home" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+
+                <a href="#" class="flex flex-col items-center text-gray-400 hover:text-[#326E97] transition duration-150">
+                    <i data-lucide="parking-circle" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Parking</span>
+                </a>
+
+                <a href="#" class="flex flex-col items-center text-[#326E97] transition duration-150 font-semibold">
+                    <i data-lucide="bus-front" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Transit</span>
+                </a>
+
+                <a href="#" class="flex flex-col items-center text-gray-400 hover:text-[#326E97] transition duration-150">
+                    <i data-lucide="ticket" class="w-6 h-6"></i>
+                    <span class="text-xs mt-1">Permits</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const currentDateElement = document.getElementById('current-date');
+        const currentTimeElement = document.getElementById('current-time');
+        const countdownTextElement = document.getElementById('countdown-text');
+        
+        const EXPIRATION_DURATION_MS = 39 * 60 * 1000;
+        let expirationTime = new Date().getTime() + EXPIRATION_DURATION_MS;
+
+        function updateDateTime() {
+            const now = new Date();
+
+            const optionsDate = { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', optionsDate).replace(/,/g, '');
+            currentDateElement.textContent = formattedDate;
+
+            const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const formattedTime = now.toLocaleTimeString('en-US', optionsTime);
+            currentTimeElement.textContent = formattedTime;
+
+            const timeLeft = expirationTime - now.getTime();
+            const passCard = document.getElementById('pass-card');
+            const expireButton = document.getElementById('expire-button');
+
+            const removePassBg = () => {
+                passCard.classList.remove('pass-bg');
+                passCard.classList.remove('bg-gray-700'); // Ensure gray is removed if expired
+                passCard.classList.remove('bg-orange-600');
+            };
+
+            if (timeLeft <= 0) {
+                countdownTextElement.textContent = "This pass has expired.";
+                removePassBg(); // Remove any previous color
+                passCard.classList.add('bg-gray-700');
+                expireButton.disabled = true;
+                expireButton.textContent = 'EXPIRED';
+                expireButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+                expireButton.classList.add('bg-gray-500');
+            } else {
+                const minutes = Math.floor(timeLeft / (60 * 1000));
+                const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+                
+                const formattedMinutes = String(minutes).padStart(2, '0');
+                const formattedSeconds = String(seconds).padStart(2, '0');
+
+                countdownTextElement.textContent = `This pass expires after ${formattedMinutes} minutes and ${formattedSeconds} seconds`;
+                
+                if (minutes < 5) {
+                    removePassBg(); // Remove previous color
+                    passCard.classList.add('bg-orange-600');
+                } else {
+                    removePassBg(); // Remove previous color
+                    passCard.classList.add('pass-bg'); // Set back to custom blue
+                }
+            }
+        }
+
+        document.getElementById('expire-button').addEventListener('click', () => {
+            expirationTime = new Date().getTime() - 1000;
+            updateDateTime();
+            console.log('Pass manually expired.');
+        });
+
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+    </script>
+</body>
+</html>
