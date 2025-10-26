@@ -82,15 +82,15 @@
             <div id="pass-card" class="main-card pass-bg text-white px-6 py-10 rounded-3xl text-center w-[90%] h-[675px] flex flex-col justify-between">
                 
                 <div class="flex flex-col items-center">
-                    <p class="text-xl font-semibold opacity-75 mb-6">Student 10 Ride Card</p> <!-- Increased text size and margin -->
+                    <p class="text-xl font-semibold opacity-75 mb-6">Student Monthly Pass</p>
                     
                     <h1 id="current-date" class="text-4xl font-extrabold mb-2"></h1>
                     <p id="current-time" class="text-2xl font-bold mb-8"></p>
 
-                    <p class="text font-medium mb-6">Barrie Transit</p> <!-- Increased text size -->
                 </div>
-
+                <p class="text font-medium">Barrie Transit</p>
                 <div class="city-video-container flex-grow rounded-xl shadow-inner my-6">
+                    
                     <video autoplay loop muted playsinline class="w-full h-full object-cover">
                         <source src="/static/fuckyoubarrietransit.mp4" type="video/mp4">
                         Your browser does not support the video tag.
@@ -98,7 +98,7 @@
                 </div>
                 
                 <div class="flex flex-col items-center">
-                    <button id="expire-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-16 rounded-full shadow-lg transition duration-200 transform hover:scale-105 mb-6 focus:outline-none">
+                    <button id="expire-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-14 rounded-full shadow-lg transition duration-200 transform hover:scale-105 mb-8 focus:outline-none">
                         Expire
                     </button>
 
@@ -142,7 +142,7 @@
         const currentTimeElement = document.getElementById('current-time');
         const countdownTextElement = document.getElementById('countdown-text');
         
-        const EXPIRATION_DURATION_MS = 39 * 60 * 1000;
+        const EXPIRATION_DURATION_MS = 79 * 60 * 1000;
         let expirationTime = new Date().getTime() + EXPIRATION_DURATION_MS;
 
         function updateDateTime() {
@@ -181,7 +181,7 @@
                 const formattedMinutes = String(minutes).padStart(2, '0');
                 const formattedSeconds = String(seconds).padStart(2, '0');
 
-                countdownTextElement.textContent = `This pass expires after ${formattedMinutes} minutes and ${formattedSeconds} seconds`;
+                countdownTextElement.textContent = `This pass expires after ${formattedMinutes} minutes.`;
                 
                 if (minutes < 5) {
                     removePassBg(); // Remove previous color
