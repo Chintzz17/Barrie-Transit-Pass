@@ -6,7 +6,7 @@
     <title>Barrie Transit Pass</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -17,7 +17,7 @@
                         'pass-red': '#F53B57',  /* Expire button red */
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Fira Sans', 'sans-serif'],
                     },
                 }
             }
@@ -25,7 +25,7 @@
     </script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Fira Sans', sans-serif;
             background-color: #f0f2f5;
         }
         #app-container {
@@ -43,7 +43,7 @@
         }
         
         .pass-bg {
-            background-color: #326E97; 
+            background-color: #a43e66; 
         }
 
         .city-video-container {
@@ -82,14 +82,14 @@
             <div id="pass-card" class="main-card pass-bg text-white px-6 py-10 rounded-3xl text-center w-[90%] h-[675px] flex flex-col justify-between">
                 
                 <div class="flex flex-col items-center">
-                    <p class="text-xl font-semibold opacity-75 mb-6">Student Monthly Pass</p>
+                    <p class="text-xl font-Suit Sans Pro opacity-75 mb-6">Adult Monthly Pass</p>
                     
                     <h1 id="current-date" class="text-4xl font-extrabold mb-2"></h1>
                     <p id="current-time" class="text-2xl font-bold mb-8"></p>
 
                 </div>
                 <div class="flex flex-col items-center">
-                    <p class="text font-medium mb-2">Barrie Transit</p>
+                    <p class="text mb-2">Barrie Transit</p>
                     <div class="city-video-container flex-grow shadow-inner w-full">
                         <video autoplay loop muted playsinline class="w-full h-full object-cover">
                             <source src="/static/fuckyoubarrietransit.mp4" type="video/mp4">
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col items-center">
-                    <button id="expire-button" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-10 rounded-full shadow-lg transition duration-200 transform hover:scale-105 mb-8 focus:outline-none">
+                    <button id="expire-button" class="bg-red-500 hover:bg-red-600 text-white py-2 px-10 rounded-full shadow-lg transition duration-200 transform hover:scale-105 mb-8 focus:outline-none">
                         Expire
                     </button>
 
